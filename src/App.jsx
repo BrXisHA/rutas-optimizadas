@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase'
 import Login          from './components/Login'
@@ -19,7 +19,7 @@ export default function App() {
   const [usuario, setUsuario] = useState(undefined) // undefined = cargando
   const [toast,   setToast]   = useState({ message: '', type: 'info' })
 
-  // Escuchar estado de autenticación
+  // Escuchar estado de autenticaciÃ³n
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => setUsuario(user ?? null))
     return unsub
@@ -27,10 +27,10 @@ export default function App() {
 
   const handleSignOut = async () => {
     await signOut(auth)
-    setToast({ message: 'Sesión cerrada.', type: 'info' })
+    setToast({ message: 'SesiÃ³n cerrada.', type: 'info' })
   }
 
-  // ── Pantalla de carga inicial ──────────────────────────────────
+  // â”€â”€ Pantalla de carga inicial â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (usuario === undefined) return (
     <div style={{
       minHeight: '100dvh',
@@ -41,20 +41,20 @@ export default function App() {
     </div>
   )
 
-  // ── Pantalla de login ──────────────────────────────────────────
+  // â”€â”€ Pantalla de login â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (!usuario) return <Login />
 
-  // ── App principal ──────────────────────────────────────────────
+  // â”€â”€ App principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   return (
     <div className="app-shell">
 
-      {/* ── Header ─────────────────────────────────────────────── */}
+      {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="app-header">
         <img
-          src="/logo-equipo-total.png"
+          src="/equipototalsvg.svg"
           alt="Equipo Total"
           style={{ height: 40, width: 'auto', borderRadius: 8, flexShrink: 0,
-            filter: 'drop-shadow(0 0 6px rgba(248,113,113,0.3))' }}
+            filter: 'drop-shadow(0 0 6px rgba(56,189,248,0.4))' }}
         />
         <div style={{ flex: 1 }}>
           <div className="header-title">
@@ -66,7 +66,7 @@ export default function App() {
         </div>
         <button
           onClick={handleSignOut}
-          title="Cerrar sesión"
+          title="Cerrar sesiÃ³n"
           style={{
             background: 'rgba(239,68,68,0.1)',
             border: '1px solid rgba(239,68,68,0.25)',
@@ -82,8 +82,8 @@ export default function App() {
         </button>
       </header>
 
-      {/* ── Tab Navigation ──────────────────────────────────────── */}
-      <nav className="tab-nav" role="tablist" aria-label="Navegación principal">
+      {/* â”€â”€ Tab Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <nav className="tab-nav" role="tablist" aria-label="NavegaciÃ³n principal">
         <button
           role="tab"
           className={`tab-btn ${tab === TABS.DIRECTORIO ? 'active' : ''}`}
@@ -118,7 +118,7 @@ export default function App() {
         </button>
       </nav>
 
-      {/* ── Contenido ────────────────────────────────────────────── */}
+      {/* â”€â”€ Contenido â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <main className="main-content" id="main-content">
 
         {tab === TABS.DIRECTORIO && (
@@ -133,7 +133,7 @@ export default function App() {
         {tab === TABS.ARMAR_RUTA && (
           <section className="card" aria-label="Armar ruta">
             <div className="card-header">
-              <Route size={16} /> Armar Ruta del Día
+              <Route size={16} /> Armar Ruta del DÃ­a
             </div>
             <TabArmarRuta />
           </section>
@@ -153,3 +153,4 @@ export default function App() {
     </div>
   )
 }
+

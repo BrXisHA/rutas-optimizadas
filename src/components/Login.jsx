@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
 import { Truck, Mail, Lock, Loader, AlertCircle } from 'lucide-react'
@@ -13,13 +13,13 @@ export default function Login() {
   const mensajeError = (code) => {
     const map = {
       'auth/user-not-found':        'No existe una cuenta con ese correo.',
-      'auth/wrong-password':        'Contraseña incorrecta.',
-      'auth/invalid-credential':    'Correo o contraseña incorrectos.',
-      'auth/email-already-in-use':  'Ese correo ya está registrado.',
-      'auth/weak-password':         'La contraseña debe tener al menos 6 caracteres.',
-      'auth/invalid-email':         'El formato del correo no es válido.',
+      'auth/wrong-password':        'ContraseÃ±a incorrecta.',
+      'auth/invalid-credential':    'Correo o contraseÃ±a incorrectos.',
+      'auth/email-already-in-use':  'Ese correo ya estÃ¡ registrado.',
+      'auth/weak-password':         'La contraseÃ±a debe tener al menos 6 caracteres.',
+      'auth/invalid-email':         'El formato del correo no es vÃ¡lido.',
     }
-    return map[code] || 'Ocurrió un error. Intenta de nuevo.'
+    return map[code] || 'OcurriÃ³ un error. Intenta de nuevo.'
   }
 
   const handleSubmit = async (e) => {
@@ -60,16 +60,16 @@ export default function Login() {
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <img
-            src="/logo-equipo-total.png"
+            src="/equipototalsvg.svg"
             alt="Equipo Total"
             style={{ height: 56, width: 'auto', borderRadius: 10, marginBottom: 12 }}
           />
-          <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
-            Sistema de Gestión Logística
+          <div style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 2 }}>
+            <span style={{ color: '#dc2626' }}>Equipo</span> Total
           </div>
         </div>
 
-        {/* Título */}
+        {/* TÃ­tulo */}
         <h1 style={{
           fontSize: '1.1rem',
           fontWeight: 700,
@@ -77,14 +77,14 @@ export default function Login() {
           textAlign: 'center',
           color: 'var(--color-text)',
         }}>
-          {modo === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+          {modo === 'login' ? 'Iniciar SesiÃ³n' : 'Crear Cuenta'}
         </h1>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Email */}
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Mail size={13} /> Correo electrónico
+              <Mail size={13} /> Correo electrÃ³nico
             </label>
             <input
               type="email"
@@ -97,15 +97,15 @@ export default function Login() {
             />
           </div>
 
-          {/* Contraseña */}
+          {/* ContraseÃ±a */}
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Lock size={13} /> Contraseña
+              <Lock size={13} /> ContraseÃ±a
             </label>
             <input
               type="password"
               className="form-input"
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -121,7 +121,7 @@ export default function Login() {
             </div>
           )}
 
-          {/* Botón */}
+          {/* BotÃ³n */}
           <button
             type="submit"
             className="btn btn-primary"
@@ -129,7 +129,7 @@ export default function Login() {
             style={{ marginTop: 4 }}
           >
             {cargando
-              ? <><Loader size={16} className="spin" /> Cargando…</>
+              ? <><Loader size={16} className="spin" /> Cargandoâ€¦</>
               : modo === 'login' ? 'Entrar' : 'Crear cuenta'}
           </button>
         </form>
@@ -141,7 +141,7 @@ export default function Login() {
           color: 'var(--color-muted)',
           marginTop: 18,
         }}>
-          {modo === 'login' ? '¿Sin cuenta aún? ' : '¿Ya tienes cuenta? '}
+          {modo === 'login' ? 'Â¿Sin cuenta aÃºn? ' : 'Â¿Ya tienes cuenta? '}
           <button
             onClick={() => { setModo(modo === 'login' ? 'registro' : 'login'); setError('') }}
             style={{
@@ -154,10 +154,11 @@ export default function Login() {
               padding: 0,
             }}
           >
-            {modo === 'login' ? 'Regístrate' : 'Inicia sesión'}
+            {modo === 'login' ? 'RegÃ­strate' : 'Inicia sesiÃ³n'}
           </button>
         </p>
       </div>
     </div>
   )
 }
+

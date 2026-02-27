@@ -34,7 +34,7 @@ function MapaPinDrop({ lat, lng, onChange }) {
 
     // Ícono personalizado rojo
     const iconoRojo = L.divIcon({
-      html: `<div style="width:22px;height:22px;background:#9b1c1c;border:3px solid #f87171;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>`,
+      html: `<div style="width:22px;height:22px;background:#0284c7;border:3px solid #38bdf8;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>`,
       iconSize: [22, 22],
       iconAnchor: [11, 22],
       className: '',
