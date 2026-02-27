@@ -133,7 +133,7 @@ export default function App() {
         {tab === TABS.ARMAR_RUTA && (
           <section className="card" aria-label="Armar ruta">
             <div className="card-header">
-              <Route size={16} /> Armar Ruta del DÃ­a
+              <Route size={16} /> Armar Ruta del Dia
             </div>
             <TabArmarRuta />
           </section>
