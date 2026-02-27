@@ -2,6 +2,7 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
 import { Mail, Lock, Loader, AlertCircle } from 'lucide-react'
+import logoUrl from '../assets/equipototalsvg.svg'
 
 export default function Login() {
   const [modo,     setModo]     = useState('login')
@@ -58,7 +59,7 @@ export default function Login() {
         {/* Logo grande centrado */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img
-            src="/equipototalsvg.svg"
+            src={logoUrl}
             alt="Equipo Total"
             style={{
               width: '70%',
@@ -66,9 +67,6 @@ export default function Login() {
               height: 'auto',
               display: 'block',
               margin: '0 auto',
-            }}
-            onError={(e) => {
-              e.target.style.display = 'none'
             }}
           />
         </div>
