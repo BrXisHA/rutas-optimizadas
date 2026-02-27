@@ -45,8 +45,8 @@ export default defineConfig({
         background_color: "#050e1a",
         display: "standalone",
         orientation: "portrait",
-        scope: "/",
-        start_url: "/",
+        scope: "/rutas-optimizadas/",
+        start_url: "/rutas-optimizadas/",
         icons: [
           {
             src: "pwa-192x192.png",
