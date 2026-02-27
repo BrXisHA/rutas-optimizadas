@@ -53,8 +53,8 @@ export default function App() {
         <img
           src="/equipototalsvg.svg"
           alt="Equipo Total"
-          style={{ height: 40, width: 'auto', borderRadius: 8, flexShrink: 0,
-            filter: 'drop-shadow(0 0 6px rgba(56,189,248,0.4))' }}
+          style={{ width: 100, height: 'auto', flexShrink: 0,
+            filter: 'drop-shadow(0 0 4px rgba(56,189,248,0.3))' }}
         />
         <div style={{ flex: 1 }}>
           <div className="header-title">

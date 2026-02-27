@@ -1,26 +1,23 @@
 ﻿import { useState } from 'react'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
-import { Truck, Mail, Lock, Loader, AlertCircle } from 'lucide-react'
+import { Mail, Lock, Loader, AlertCircle } from 'lucide-react'
 
 export default function Login() {
-  const [modo,      setModo]      = useState('login')  // 'login' | 'registro'
-  const [email,     setEmail]     = useState('')
-  const [password,  setPassword]  = useState('')
-  const [cargando,  setCargando]  = useState(false)
-  const [error,     setError]     = useState('')
+  const [modo,     setModo]     = useState('login')
+  const [email,    setEmail]    = useState('')
+  const [password, setPassword] = useState('')
+  const [cargando, setCargando] = useState(false)
+  const [error,    setError]    = useState('')
 
-  const mensajeError = (code) => {
-    const map = {
-      'auth/user-not-found':        'No existe una cuenta con ese correo.',
-      'auth/wrong-password':        'ContraseÃ±a incorrecta.',
-      'auth/invalid-credential':    'Correo o contraseÃ±a incorrectos.',
-      'auth/email-already-in-use':  'Ese correo ya estÃ¡ registrado.',
-      'auth/weak-password':         'La contraseÃ±a debe tener al menos 6 caracteres.',
-      'auth/invalid-email':         'El formato del correo no es vÃ¡lido.',
-    }
-    return map[code] || 'OcurriÃ³ un error. Intenta de nuevo.'
-  }
+  const mensajeError = (code) => ({
+    'auth/user-not-found':       'No existe una cuenta con ese correo.',
+    'auth/wrong-password':       'Contrasena incorrecta.',
+    'auth/invalid-credential':   'Correo o contrasena incorrectos.',
+    'auth/email-already-in-use': 'Ese correo ya esta registrado.',
+    'auth/weak-password':        'La contrasena debe tener al menos 6 caracteres.',
+    'auth/invalid-email':        'El formato del correo no es valido.',
+  }[code] || 'Ocurrio un error. Intenta de nuevo.')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -54,22 +51,29 @@ export default function Login() {
         background: 'var(--color-card)',
         border: '1px solid var(--color-border)',
         borderRadius: 'var(--radius)',
-        padding: '32px 28px',
+        padding: '36px 28px 32px',
         boxShadow: 'var(--shadow-glow)',
       }}>
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+
+        {/* Logo grande centrado */}
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img
             src="/equipototalsvg.svg"
             alt="Equipo Total"
-            style={{ height: 56, width: 'auto', borderRadius: 10, marginBottom: 12 }}
+            style={{
+              width: '70%',
+              maxWidth: 220,
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto',
+            }}
+            onError={(e) => {
+              e.target.style.display = 'none'
+            }}
           />
-          <div style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 2 }}>
-            <span style={{ color: '#dc2626' }}>Equipo</span> Total
-          </div>
         </div>
 
-        {/* TÃ­tulo */}
+        {/* Titulo */}
         <h1 style={{
           fontSize: '1.1rem',
           fontWeight: 700,
@@ -77,14 +81,14 @@ export default function Login() {
           textAlign: 'center',
           color: 'var(--color-text)',
         }}>
-          {modo === 'login' ? 'Iniciar SesiÃ³n' : 'Crear Cuenta'}
+          {modo === 'login' ? 'Iniciar Sesion' : 'Crear Cuenta'}
         </h1>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Email */}
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Mail size={13} /> Correo electrÃ³nico
+              <Mail size={13} /> Correo electronico
             </label>
             <input
               type="email"
@@ -97,15 +101,15 @@ export default function Login() {
             />
           </div>
 
-          {/* ContraseÃ±a */}
+          {/* Password */}
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Lock size={13} /> ContraseÃ±a
+              <Lock size={13} /> Contrasena
             </label>
             <input
               type="password"
               className="form-input"
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              placeholder="Min. 6 caracteres"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -121,7 +125,7 @@ export default function Login() {
             </div>
           )}
 
-          {/* BotÃ³n */}
+          {/* Boton */}
           <button
             type="submit"
             className="btn btn-primary"
@@ -129,7 +133,7 @@ export default function Login() {
             style={{ marginTop: 4 }}
           >
             {cargando
-              ? <><Loader size={16} className="spin" /> Cargandoâ€¦</>
+              ? <><Loader size={16} className="spin" /> Cargando...</>
               : modo === 'login' ? 'Entrar' : 'Crear cuenta'}
           </button>
         </form>
@@ -141,7 +145,7 @@ export default function Login() {
           color: 'var(--color-muted)',
           marginTop: 18,
         }}>
-          {modo === 'login' ? 'Â¿Sin cuenta aÃºn? ' : 'Â¿Ya tienes cuenta? '}
+          {modo === 'login' ? 'Sin cuenta aun? ' : 'Ya tienes cuenta? '}
           <button
             onClick={() => { setModo(modo === 'login' ? 'registro' : 'login'); setError('') }}
             style={{
@@ -154,11 +158,10 @@ export default function Login() {
               padding: 0,
             }}
           >
-            {modo === 'login' ? 'RegÃ­strate' : 'Inicia sesiÃ³n'}
+            {modo === 'login' ? 'Registrate' : 'Inicia sesion'}
           </button>
         </p>
       </div>
     </div>
   )
 }
-
