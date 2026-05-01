@@ -4,7 +4,7 @@ import {
   onSnapshot, serverTimestamp, query, orderBy,
 } from 'firebase/firestore'
 import { db } from '../firebase'
-import { UserPlus, Trash2, MapPin, Loader, Save, X } from 'lucide-react'
+import { UserPlus, Trash2, MapPin, Loader, Save, X, Navigation, Hash } from 'lucide-react'
 
 // Coordenadas del almacén (punto de inicio del pin por defecto)
 const ALMACEN = { lat: 16.77146959206133, lng: -93.19299112393828 }
@@ -68,12 +68,16 @@ function MapaPinDrop({ lat, lng, onChange }) {
 
 /* ───────────────────── FORMULARIO NUEVO CLIENTE ───────────────────── */
 function FormNuevoCliente({ onCerrar }) {
-  const [nombre,    setNombre]    = useState('')
-  const [direccion, setDireccion] = useState('')
-  const [lat,       setLat]       = useState(ALMACEN.lat)
-  const [lng,       setLng]       = useState(ALMACEN.lng)
-  const [guardando, setGuardando] = useState(false)
-  const [leafletOk, setLeafletOk] = useState(false)
+  const [nombre,       setNombre]       = useState('')
+  const [direccion,    setDireccion]    = useState('')
+  const [lat,          setLat]          = useState(ALMACEN.lat)
+  const [lng,          setLng]          = useState(ALMACEN.lng)
+  const [guardando,    setGuardando]    = useState(false)
+  const [leafletOk,    setLeafletOk]    = useState(false)
+  const [obtenGPS,     setObtenGPS]     = useState(false)
+  const [errorGPS,     setErrorGPS]     = useState('')
+  const [coordsText,   setCoordsText]   = useState('')
+  const [coordsError,  setCoordsError]  = useState('')
   const leafletReady = useRef(false)
 
   useEffect(() => {
@@ -90,6 +94,50 @@ function FormNuevoCliente({ onCerrar }) {
     script.onload = () => { leafletReady.current = true; setLeafletOk(true) }
     document.head.appendChild(script)
   }, [])
+
+  // --- GPS: obtener ubicación actual ---
+  const usarUbicacionActual = () => {
+    if (!navigator.geolocation) {
+      setErrorGPS('Tu dispositivo no soporta geolocalización.')
+      return
+    }
+    setObtenGPS(true)
+    setErrorGPS('')
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const newLat = pos.coords.latitude
+        const newLng = pos.coords.longitude
+        setLat(newLat)
+        setLng(newLng)
+        setCoordsText(`${newLat}, ${newLng}`)
+        setObtenGPS(false)
+      },
+      (err) => {
+        setErrorGPS('No se pudo obtener la ubicación. Verifica los permisos.')
+        setObtenGPS(false)
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    )
+  }
+
+  // --- Coordenadas manuales (formato: lat, lng) ---
+  const handleCoordsText = (val) => {
+    setCoordsText(val)
+    setCoordsError('')
+    const match = val.trim().match(/^(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)$/)
+    if (match) {
+      const newLat = parseFloat(match[1])
+      const newLng = parseFloat(match[2])
+      if (newLat >= -90 && newLat <= 90 && newLng >= -180 && newLng <= 180) {
+        setLat(newLat)
+        setLng(newLng)
+      } else {
+        setCoordsError('Coordenadas fuera de rango válido.')
+      }
+    } else if (val.trim() !== '') {
+      setCoordsError('Formato inválido. Ej: 16.778727, -93.171785')
+    }
+  }
 
   const handleGuardar = async (e) => {
     e.preventDefault()
@@ -160,14 +208,66 @@ function FormNuevoCliente({ onCerrar }) {
             />
           </div>
 
-          {/* Mapa pin-drop */}
+          {/* --- Ubicación actual (GPS) --- */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 0 }}>
+              <Navigation size={13} /> Ubicación rápida
+            </label>
+            <button
+              type="button"
+              onClick={usarUbicacionActual}
+              disabled={obtenGPS}
+              id="btn-usar-ubicacion-actual"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                background: obtenGPS ? 'rgba(2,132,199,0.08)' : 'rgba(2,132,199,0.15)',
+                border: '1px solid rgba(56,189,248,0.4)',
+                borderRadius: 8,
+                color: 'var(--color-accent)',
+                padding: '9px 14px',
+                fontWeight: 600, fontSize: '0.82rem',
+                cursor: obtenGPS ? 'wait' : 'pointer',
+                transition: 'background 0.2s',
+              }}
+            >
+              {obtenGPS
+                ? <><Loader size={14} className="spin" /> Obteniendo ubicación…</>
+                : <><Navigation size={14} /> Usar mi ubicación actual</>}
+            </button>
+            {errorGPS && (
+              <p style={{ fontSize: '0.72rem', color: '#ef4444', marginTop: 2 }}>⚠️ {errorGPS}</p>
+            )}
+          </div>
+
+          {/* --- Ingresar coordenadas manuales --- */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <Hash size={13} /> Coordenadas manuales
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Ej: 16.778727, -93.171785"
+              value={coordsText}
+              onChange={(e) => handleCoordsText(e.target.value)}
+              id="input-coords-manual"
+              style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+            />
+            {coordsError ? (
+              <p style={{ fontSize: '0.72rem', color: '#ef4444', marginTop: 4 }}>⚠️ {coordsError}</p>
+            ) : coordsText && !coordsError ? (
+              <p style={{ fontSize: '0.68rem', color: 'var(--color-muted)', marginTop: 4 }}>✅ Coordenadas aplicadas al mapa</p>
+            ) : null}
+          </div>
+
+          {/* --- Mapa pin-drop --- */}
           <div>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8 }}>
-              <MapPin size={13} /> Ubica la puerta del cliente — Arrastra el pin
+              <MapPin size={13} /> Ajusta el pin en el mapa
             </label>
             {leafletOk ? (
               <>
-                <MapaPinDrop lat={lat} lng={lng} onChange={(la, ln) => { setLat(la); setLng(ln) }} />
+                <MapaPinDrop lat={lat} lng={lng} onChange={(la, ln) => { setLat(la); setLng(ln) }}/>
                 <p style={{ fontSize: '0.68rem', color: 'var(--color-muted)', marginTop: 6 }}>
                   📍 {lat.toFixed(6)}, {lng.toFixed(6)}
                 </p>

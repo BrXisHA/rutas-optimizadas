@@ -1,8 +1,7 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
-import { Mail, Lock, Loader, AlertCircle } from 'lucide-react'
-import logoUrl from '../assets/equipototalsvg.svg'
+import { Mail, Lock, Loader, AlertCircle, Truck } from 'lucide-react'
 
 export default function Login() {
   const [modo,     setModo]     = useState('login')
@@ -56,19 +55,20 @@ export default function Login() {
         boxShadow: 'var(--shadow-glow)',
       }}>
 
-        {/* Logo grande centrado */}
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <img
-            src={logoUrl}
-            alt="Equipo Total"
-            style={{
-              width: '70%',
-              maxWidth: 220,
-              height: 'auto',
-              display: 'block',
-              margin: '0 auto',
-            }}
-          />
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10,
+            background: 'rgba(2,132,199,0.12)',
+            border: '1px solid rgba(56,189,248,0.25)',
+            borderRadius: 14,
+            padding: '12px 22px',
+          }}>
+            <Truck size={28} color="var(--color-accent)" />
+            <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text)', letterSpacing: '-0.5px' }}>
+              Rutas
+            </span>
+          </div>
         </div>
 
         {/* Titulo */}

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase'
 import Login          from './components/Login'
@@ -6,7 +6,7 @@ import TabDirectorio  from './components/TabDirectorio'
 import TabArmarRuta   from './components/TabArmarRuta'
 import TabMisRutas    from './components/TabMisRutas'
 import Toast          from './components/Toast'
-import logoUrl        from './assets/equipototalsvg.svg'
+
 import { Users, Route, Truck, LogOut, Loader } from 'lucide-react'
 
 const TABS = {
@@ -51,14 +51,10 @@ export default function App() {
 
       {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="app-header">
-        <img
-          src={logoUrl}
-          alt="Equipo Total"
-          style={{ width: 95, height: 'auto', flexShrink: 0 }}
-        />
+        <Truck size={34} color="var(--color-accent)" style={{ flexShrink: 0 }} />
         <div style={{ flex: 1 }}>
           <div className="header-title">
-            <span>Equipo</span> Total
+            Rutas
           </div>
           <div className="header-subtitle" style={{ fontSize: '0.65rem' }}>
             {usuario.email}
